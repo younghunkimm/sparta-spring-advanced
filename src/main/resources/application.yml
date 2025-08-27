@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring-advanced
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+jwt:
+  secret:
+    key: 05b6dbbb6909e285402841ea484cf4632cae6f7bf490cf24f9ced716804a0abe137ae48a8c09f4e33cb255fe41b1864701eb3694e67b41b5a6c9cd3a57d51c3c
