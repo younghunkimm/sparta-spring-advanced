@@ -24,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerService {
 
+    // TODO: Repository -> Service
     private final ManagerRepository managerRepository;
     private final UserRepository userRepository;
     private final TodoRepository todoRepository;

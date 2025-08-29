@@ -36,6 +36,7 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.getManagers(todoId));
     }
 
+    // TODO: jwtUtil 제거 및 AuthUser 활용
     @DeleteMapping("/todos/{todoId}/managers/{managerId}")
     public void deleteManager(
             @RequestHeader("Authorization") String bearerToken,

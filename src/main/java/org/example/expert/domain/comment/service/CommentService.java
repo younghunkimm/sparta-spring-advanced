@@ -22,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
 
+    // TODO: Repository -> Service, Mapper(toEntity, toDto)
     private final TodoRepository todoRepository;
     private final CommentRepository commentRepository;
 
