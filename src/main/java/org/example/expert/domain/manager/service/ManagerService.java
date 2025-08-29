@@ -43,7 +43,7 @@ public class ManagerService {
         }
 
         User managerUser = userReader.getUserOrElseThrow(
-                user.getId(),
+                managerSaveRequest.getManagerUserId(),
                 () -> new InvalidRequestException("등록하려고 하는 담당자 유저가 존재하지 않습니다.")
         );
 
