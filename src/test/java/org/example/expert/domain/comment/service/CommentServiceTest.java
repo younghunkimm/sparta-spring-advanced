@@ -1,6 +1,15 @@
 package org.example.expert.domain.comment.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
 import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
+import org.example.expert.domain.comment.dto.response.CommentResponse;
 import org.example.expert.domain.comment.dto.response.CommentSaveResponse;
 import org.example.expert.domain.comment.entity.Comment;
 import org.example.expert.domain.comment.repository.CommentRepository;
@@ -16,18 +25,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-    @Mock private CommentRepository commentRepository;
-    @Mock private TodoReader todoReader;
+    @Mock
+    private CommentRepository commentRepository;
+    @Mock
+    private TodoReader todoReader;
 
-    @InjectMocks private CommentService commentService;
+    @InjectMocks
+    private CommentService commentService;
 
     @Test
     public void comment_등록_중_할일을_찾지_못해_에러가_발생한다() {
@@ -36,7 +43,8 @@ class CommentServiceTest {
         CommentSaveRequest request = new CommentSaveRequest("contents");
         AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
 
-        given(todoReader.getTodoOrElseThrow(anyLong())).willThrow(new InvalidRequestException("Todo not found"));
+        given(todoReader.getTodoOrElseThrow(anyLong())).willThrow(
+            new InvalidRequestException("Todo not found"));
 
         // when
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> {
@@ -65,5 +73,29 @@ class CommentServiceTest {
 
         // then
         assertNotNull(result);
+    }
+
+    @Test
+    public void comment_목록을_정상적으로_조회한다() {
+        // given
+        long todoId = 1L;
+        User user = new User("test@test.com", "password", UserRole.USER);
+        Todo todo = new Todo("title", "contents", "sunny", user);
+        List<Comment> commentList = List.of(
+            new Comment("comment 1", user, todo),
+            new Comment("comment 2", user, todo)
+        );
+
+        given(commentRepository.findByTodoIdWithUser(todoId)).willReturn(commentList);
+
+        // when
+        List<CommentResponse> result = commentService.getComments(todoId);
+
+        // then
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("comment 1", result.get(0).getContents());
+        assertEquals("comment 2", result.get(1).getContents());
+        assertEquals(user.getEmail(), result.get(0).getUser().getEmail());
     }
 }
