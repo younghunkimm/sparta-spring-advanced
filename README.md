@@ -44,7 +44,11 @@ AOP를 이용한 로깅, Filter를 사용한 전역 인증 처리, ArgumentResol
     - Lombok
     - Validation
 
-## 4. API 명세
+## 4. 테스트 커버리지
+
+<img width="890" height="331" alt="image" src="https://github.com/user-attachments/assets/9056811a-60d9-4ecb-8375-02d3181d04bd" />
+
+## 5. API 명세
 
 <details>
 <summary><b>인증 (Auth)</b></summary>
